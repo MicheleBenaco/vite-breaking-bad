@@ -1,7 +1,7 @@
 <template>
   <AppHeader/>
   <main class="container">
-    <AppSearch/>
+    <AppSearch @filterchar="getCharacter" />
     <CharacterList :characters="CharacterList"/>
   </main>
   
@@ -23,12 +23,17 @@ data() {
   return {
     apiUrl :'https://www.breakingbadapi.com/api/characters',
     CharacterList:[],
+    searchStatus : '',
   }
 },methods: {
-    getCharacter(){
+    getCharacter(status){
+      if(status){
+        this.apiUrl = this.apiUrl + '?category'+status;
+      }
       axios.get(this.apiUrl).then(
         (res)=>{ 
           this.CharacterList = [...res.data];
+
         }
       )
 
